@@ -10,6 +10,7 @@
 //                                                                            //
 // ************************************************************************** //
 
+#include "Expr.hpp"
 #include <expert.hpp>
 
 std::vector<Fact *>  mapL;
@@ -66,11 +67,11 @@ IElement	*getExpr(std::string s) {
 	}
 	else if (!imp) {
 		std::cout << "return no impl " << s << std::endl;
-		out = new Expr::Expr(elems, ope);
+		out = new Expr(elems, ope);
 	}
 	else {
 		std::cout << "return imp " << s << std::endl;
-		out = new Expr::Expr(elems, ope, imp, 1);
+		out = new Expr(elems, ope, imp, 1);
 	}
 	return (out);
 }

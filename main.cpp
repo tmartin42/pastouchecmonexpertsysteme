@@ -3,6 +3,11 @@
 
 //std::vector<IElement *>  mapL;
 
+IElement *opSub(IElement *l){
+	std::cout << "SUB " << l->val();
+	return(new Fact(l->val()));
+}
+
 IElement *opNot(IElement *l){
 	std::cout << "NOT " << ((Fact *)l)->i << ": " << l->val();
 	if (l->val() == 1) {

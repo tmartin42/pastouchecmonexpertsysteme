@@ -10,7 +10,7 @@
 #                                                                              #
 #******************************************************************************#
 
-CC = g++ -Wall -Wextra -Werror -g
+CC = g++ # -Wall -Wextra -Werror -g
 
 name = expert_system
 SOURCESC = expert.cpp Expr.cpp Fact.cpp main.cpp

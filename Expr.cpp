@@ -81,6 +81,23 @@ for (int j = 0; j < (int)_vars.size(); j++) {
 		std::cout << "gate: " << _gates[j] << std::endl;
 	}
 	std::cout << "---------asdasdasdasdasd" << std::endl;*/
+       /* for (int j = 0; j < (int)cpy_vars.size(); j++) {
+                std::cout << "i: " << ((Fact *)cpy_vars[j])->i << ", v:"<< ((Fact *)cpy_vars[j])->v << ", j:" << j  << std::endl;
+        }*/
+        std::cout << "--" << std::endl;
+        for (int j = 0; j < (int)cpy_gates.size(); j++) {
+                std::cout << "gate: " << cpy_vars[j]->val() << std::endl;
+        	std::cout << "gateafter: " << cpy_vars[j]->val() << std::endl;
+	}
+        std::cout << "---------2" << std::endl;
+
+        for (int j = 0; j < (int)cpy_gates.size(); j++) {
+                if (cpy_gates[j] == SUB) {
+                   	
+			cpy_vars[j] = opSub(cpy_vars[j]);
+                        cpy_gates.erase(cpy_gates.begin() + j);
+                }
+        }
 	/*for (int j = 0; j < (int)cpy_vars.size(); j++) {
 		std::cout << "i: " << ((Fact *)cpy_vars[j])->i << ", v:"<< ((Fact *)cpy_vars[j])->v << ", j:" << j  << std::endl;
 	}
@@ -178,7 +195,52 @@ void Expr::isTrue (void) {
 
 int Expr::val(void) const {
 	std::cout << "LAPIREERREUR" << std::endl;
-	return (-1);
+	
+        std::vector<IElement *> cpy_vars = _vars;
+        std::vector<eGate> cpy_gates = _gates;
+
+	std::cout << "test" << std::endl;
+ for (int j = 0; j < (int)cpy_gates.size(); j++) {
+                if (cpy_gates[j] == SUB) {
+                        cpy_vars[j] = opSub(cpy_vars[j]);
+  //                      cpy_gates.erase(cpy_gates.begin() + j);
+                }
+        }
+        std::cout << "test2" << std::endl;
+        for (int j = 0; j < (int)cpy_gates.size(); j++) {
+                if (cpy_gates[j] == NOT) {
+                        cpy_vars[j] = opNot(cpy_vars[j]);
+                        cpy_gates.erase(cpy_gates.begin() + j);
+                }
+        }
+        std::cout << "test3" << std::endl;
+      for (int j = 0; j < (int)cpy_gates.size(); j++) {
+                if (cpy_gates[j] == AND) {
+                        cpy_vars[j] = opAnd(cpy_vars[j], cpy_vars[j + 1]);
+                        cpy_vars.erase(cpy_vars.begin()+ j + 1);
+                        cpy_gates.erase(cpy_gates.begin() + j);
+                }
+        }
+        std::cout << "test4" << std::endl;
+        for (int j = 0; j < (int)cpy_gates.size(); j++) {
+                if (cpy_gates[j] == OR) {
+                        cpy_vars[j] = opOr(cpy_vars[j], cpy_vars[j + 1]);
+                        cpy_vars.erase(cpy_vars.begin() + j + 1);
+                        cpy_gates.erase(cpy_gates.begin() + j);
+                }
+        }
+        std::cout << "test5" << std::endl;
+        for (int j = 0; j < (int)cpy_gates.size(); j++) {
+                if (cpy_gates[j] == XOR) {
+                        cpy_vars[j] = opXor(cpy_vars[j], cpy_vars[j + 1]);
+                        cpy_vars.erase(cpy_vars.begin() + j + 1);
+                        cpy_gates.erase(cpy_gates.begin() + j);
+                }
+        }
+        std::cout << "test6 " << cpy_vars.size() << std::endl;
+	if (!cpy_vars.size())
+	 return -1;	
+	return (cpy_vars.back()->val());
 }
 
 IElement    *Expr::getImplies() const {

@@ -30,6 +30,7 @@ class Fact;
 
 extern std::vector<Fact *>  mapL;
 
+IElement *opSub(IElement *l);
 IElement *opNot(IElement *l);
 IElement *opAnd(IElement *l, IElement *r);
 IElement *opOr(IElement *l, IElement *r);
