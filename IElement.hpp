@@ -17,6 +17,7 @@
 
 class IElement {
 public :
+	virtual void isNot(void) = 0;
 	virtual void isTrue(void) = 0;
     virtual int 	val(void) const = 0;
     virtual void addExpr(IElement *rule) = 0;

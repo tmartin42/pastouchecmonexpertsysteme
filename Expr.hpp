@@ -42,6 +42,7 @@ public:
     int		val(void) const;
 
     void	isTrue(void);
+	void	isNot(void);
     void addExpr(IElement *rule);
     void	refresh();
 

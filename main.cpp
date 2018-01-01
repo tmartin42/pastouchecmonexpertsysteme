@@ -19,6 +19,7 @@ IElement *opNot(IElement *l){
 	return (new Fact(1));
 }
 IElement *opAnd(IElement *l, IElement *r){
+//	std::cout << "lol ?" << std::endl;
 	std::cout << "AND " << ((Fact *)l)->i << ": " << l->val() << ", " << ((Fact *)r)->i << ": " << r->val();
 	if (l->val() && r->val()) {
 

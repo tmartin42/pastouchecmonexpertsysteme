@@ -33,6 +33,7 @@ public:
 
 	char	getName() const;
 
+	void	isNot(void);
     void	isTrue(void);
     void	change(int newVal);
     void	addExpr(IElement *rule);

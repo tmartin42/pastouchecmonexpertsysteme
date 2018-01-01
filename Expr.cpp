@@ -76,16 +76,18 @@ std::cout << "--- into refresh ---" << std::endl;
 for (int j = 0; j < (int)_vars.size(); j++) {
 		std::cout << "i: " << ((Fact *)_vars[j])->i << ", v:"<< ((Fact *)_vars[j])->v << ", j:" << j << std::endl;
 	}
+*/
 	std::cout << "--" << std::endl;
 	for (int j = 0; j < (int)_gates.size(); j++) {
 		std::cout << "gate: " << _gates[j] << std::endl;
 	}
-	std::cout << "---------asdasdasdasdasd" << std::endl;*/
+	std::cout << "---------asdasdasdasdasd" << std::endl;
        /* for (int j = 0; j < (int)cpy_vars.size(); j++) {
                 std::cout << "i: " << ((Fact *)cpy_vars[j])->i << ", v:"<< ((Fact *)cpy_vars[j])->v << ", j:" << j  << std::endl;
         }*/
         std::cout << "--" << std::endl;
-        for (int j = 0; j < (int)cpy_gates.size(); j++) {
+        std::cout << "gateSize: " << cpy_gates.size() << std::endl;
+	for (int j = 0; j < (int)cpy_gates.size(); j++) {
                 std::cout << "gate: " << cpy_vars[j]->val() << std::endl;
         	std::cout << "gateafter: " << cpy_vars[j]->val() << std::endl;
 	}
@@ -96,7 +98,8 @@ for (int j = 0; j < (int)_vars.size(); j++) {
                    	
 			cpy_vars[j] = opSub(cpy_vars[j]);
                         cpy_gates.erase(cpy_gates.begin() + j);
-                }
+        		j--;
+	        }
         }
 	/*for (int j = 0; j < (int)cpy_vars.size(); j++) {
 		std::cout << "i: " << ((Fact *)cpy_vars[j])->i << ", v:"<< ((Fact *)cpy_vars[j])->v << ", j:" << j  << std::endl;
@@ -109,8 +112,10 @@ for (int j = 0; j < (int)_vars.size(); j++) {
 
 	for (int j = 0; j < (int)cpy_gates.size(); j++) {
 		if (cpy_gates[j] == NOT) {
+			std::cout << "IN NOT" << std::endl;
 			cpy_vars[j] = opNot(cpy_vars[j]);
 			cpy_gates.erase(cpy_gates.begin() + j);
+			j--;
 		}
 	}
 
@@ -126,9 +131,12 @@ for (int j = 0; j < (int)_vars.size(); j++) {
 	//std::cout << "cpy_gates2: " << cpy_gates.size() << std::endl;
 	for (int j = 0; j < (int)cpy_gates.size(); j++) {
 		if (cpy_gates[j] == AND) {
+//			std::cout << "in AND" << std::endl;
 			cpy_vars[j] = opAnd(cpy_vars[j], cpy_vars[j + 1]);
+//			std::cout << "MEUH WAT" << std::endl;
 			cpy_vars.erase(cpy_vars.begin()+ j + 1);
 			cpy_gates.erase(cpy_gates.begin() + j);
+			j--;
 		}
 	}
 	/*for (int j = 0; j < (int)cpy_vars.size(); j++) {
@@ -145,6 +153,7 @@ for (int j = 0; j < (int)_vars.size(); j++) {
 			cpy_vars[j] = opOr(cpy_vars[j], cpy_vars[j + 1]);
 			cpy_vars.erase(cpy_vars.begin() + j + 1);
 			cpy_gates.erase(cpy_gates.begin() + j);
+			j--;
 		}
 	}
 	/*for (int j = 0; j < (int)cpy_vars.size(); j++) {
@@ -161,6 +170,7 @@ for (int j = 0; j < (int)_vars.size(); j++) {
 			cpy_vars[j] = opXor(cpy_vars[j], cpy_vars[j + 1]);
 			cpy_vars.erase(cpy_vars.begin() + j + 1);
 			cpy_gates.erase(cpy_gates.begin() + j);
+			j--;
 		}
 	}
 
@@ -184,17 +194,32 @@ for (int j = 0; j < (int)_vars.size(); j++) {
 	}
 }
 
+void Expr::isNot(void) {
+	for(int j = 0; j < (int)_vars.size(); j++) {
+		if (_vars[j]) 
+			_vars[j]->isNot();
+	}
+}
+
 void Expr::isTrue (void) {
+/*
+	for (int j = 0; j < (int)_gates.size(); j++) {
+		
+	}*/
 	for (int j = 0; j < (int)_vars.size(); j++) {
-		if (_vars[j])
-			_vars[j]->isTrue();
+		if (_vars[j]) {
+			if (_gates[j] && _gates[j] == NOT)
+				_vars[j]->isNot();
+			else	
+				_vars[j]->isTrue();
+		}
 	}
 
 	//std::cout << "expr true todo" << std::endl;
 }
 
 int Expr::val(void) const {
-	std::cout << "LAPIREERREUR" << std::endl;
+	//std::cout << "LAPIREERREUR" << std::endl;
 	
         std::vector<IElement *> cpy_vars = _vars;
         std::vector<eGate> cpy_gates = _gates;
@@ -203,15 +228,17 @@ int Expr::val(void) const {
  for (int j = 0; j < (int)cpy_gates.size(); j++) {
                 if (cpy_gates[j] == SUB) {
                         cpy_vars[j] = opSub(cpy_vars[j]);
-  //                      cpy_gates.erase(cpy_gates.begin() + j);
-                }
+                        cpy_gates.erase(cpy_gates.begin() + j);
+			j--;  
+              }
         }
         std::cout << "test2" << std::endl;
         for (int j = 0; j < (int)cpy_gates.size(); j++) {
                 if (cpy_gates[j] == NOT) {
                         cpy_vars[j] = opNot(cpy_vars[j]);
                         cpy_gates.erase(cpy_gates.begin() + j);
-                }
+                	j--;
+		}
         }
         std::cout << "test3" << std::endl;
       for (int j = 0; j < (int)cpy_gates.size(); j++) {
@@ -219,7 +246,8 @@ int Expr::val(void) const {
                         cpy_vars[j] = opAnd(cpy_vars[j], cpy_vars[j + 1]);
                         cpy_vars.erase(cpy_vars.begin()+ j + 1);
                         cpy_gates.erase(cpy_gates.begin() + j);
-                }
+                	j--;
+		}
         }
         std::cout << "test4" << std::endl;
         for (int j = 0; j < (int)cpy_gates.size(); j++) {
@@ -227,7 +255,8 @@ int Expr::val(void) const {
                         cpy_vars[j] = opOr(cpy_vars[j], cpy_vars[j + 1]);
                         cpy_vars.erase(cpy_vars.begin() + j + 1);
                         cpy_gates.erase(cpy_gates.begin() + j);
-                }
+                	j--;
+		}
         }
         std::cout << "test5" << std::endl;
         for (int j = 0; j < (int)cpy_gates.size(); j++) {
@@ -235,6 +264,7 @@ int Expr::val(void) const {
                         cpy_vars[j] = opXor(cpy_vars[j], cpy_vars[j + 1]);
                         cpy_vars.erase(cpy_vars.begin() + j + 1);
                         cpy_gates.erase(cpy_gates.begin() + j);
+			j--;
                 }
         }
         std::cout << "test6 " << cpy_vars.size() << std::endl;

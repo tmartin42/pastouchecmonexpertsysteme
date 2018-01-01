@@ -61,6 +61,13 @@ void Fact::addExpr(IElement *rule)
 	_rules.push_back((Expr *)rule);
 }
 
+void	Fact::isNot(void) {
+	if (v == 1)
+		change(0);
+	else if (v == 0)
+		change(1);
+}
+
 void Fact::isTrue(void) {
 	
 
